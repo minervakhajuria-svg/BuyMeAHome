@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { BASE_WEIGHTS } from "@/config/weights";
+import { describe, expect, it } from "vitest";
+import { BASE_WEIGHTS } from "./weights";
 
 describe("base weights", () => {
   it("sum to 100", () => {
