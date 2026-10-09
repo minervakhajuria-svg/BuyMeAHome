@@ -105,6 +105,12 @@ describe("validateNarrative", () => {
     }
   });
 
+  it("template and facts use readable names, never internal keys", () => {
+    const text = JSON.stringify(templateNarrative(input)) + JSON.stringify(input.picks.map((p) => [p.dimensions, p.commute.map((c) => c.destination)]));
+    expect(text).not.toMatch(/budgetFit|communityAmenities|orr_bellandur|manyata_hebbal/);
+    expect(JSON.stringify(input.picks.map((p) => p.dimensions))).toMatch(/Budget fit/);
+  });
+
   it("rejects numbers not in the input", () => {
     const n = templateNarrative(input);
     n.headline = "Great value at ₹9.99 crore";

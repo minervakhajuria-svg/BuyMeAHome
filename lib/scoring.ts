@@ -1,5 +1,6 @@
 import { RATES, type Rates } from "@/config/rates";
 import { BACKUP_N, BASE_WEIGHTS, MIN_COVERAGE, TOP_N, type WeightKey } from "@/config/weights";
+import { HUB_LABELS } from "@/config/questions";
 import { formatRupees } from "@/lib/format";
 import { maxAffordablePrice } from "@/lib/money";
 import type { ResolvedProfile } from "@/lib/profile/defaults";
@@ -94,12 +95,12 @@ function scoreCommute(m: MicroMarketRow, p: ResolvedProfile, ds: Dataset): DimRe
       (c) => c.micro_market_id === idOf(m) && c.destination === hub && c.mode === p.commuteMode,
     );
     if (!row) {
-      gaps.push(`No ${p.commuteMode} peak commute time to ${hub}`);
+      gaps.push(`No ${p.commuteMode.replace("_", " ")} peak commute time to ${HUB_LABELS[hub as keyof typeof HUB_LABELS] ?? hub}`);
       continue;
     }
     scores.push(commuteMinutesScore(row.peak_minutes, p.maxCommuteMinutes));
     const over = row.peak_minutes > p.maxCommuteMinutes ? ", over your limit" : "";
-    notes.push(`${hub}: ${row.peak_minutes} min peak by ${p.commuteMode} (your limit ${p.maxCommuteMinutes})${over}`);
+    notes.push(`${HUB_LABELS[hub as keyof typeof HUB_LABELS] ?? hub}: ${row.peak_minutes} min peak by ${p.commuteMode.replace("_", " ")} (your limit ${p.maxCommuteMinutes})${over}`);
   }
   return { score: scores.length ? mean(scores) : null, notes, gaps };
 }

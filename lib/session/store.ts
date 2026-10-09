@@ -4,6 +4,8 @@ import { buyerProfile, type BuyerProfile } from "@/lib/schemas";
 
 /** Sessions are addressed by an unguessable resume token. Anyone holding the link can resume. */
 export interface SessionRecord {
+  /** Database id (a uuid in Supabase; equal to the token in memory). Needed to link reports. */
+  id: string;
   token: string;
   profile: BuyerProfile;
 }
@@ -22,11 +24,11 @@ export class MemorySessionStore implements SessionStore {
   async create(profile: BuyerProfile) {
     const token = newToken();
     this.rows.set(token, profile);
-    return { token, profile };
+    return { id: token, token, profile };
   }
   async get(token: string) {
     const profile = this.rows.get(token);
-    return profile ? { token, profile } : null;
+    return profile ? { id: token, token, profile } : null;
   }
   async save(token: string, profile: BuyerProfile) {
     if (!this.rows.has(token)) throw new Error("Unknown session");
@@ -41,16 +43,16 @@ export class SupabaseSessionStore implements SessionStore {
   }
   async create(profile: BuyerProfile) {
     const token = newToken();
-    const { error } = await this.db.from("sessions").insert({ resume_token: token, profile });
+    const { data, error } = await this.db.from("sessions").insert({ resume_token: token, profile }).select("id").single();
     if (error) throw new Error(`Could not create session: ${error.message}`);
-    return { token, profile };
+    return { id: data.id as string, token, profile };
   }
   async get(token: string) {
-    const { data, error } = await this.db.from("sessions").select("profile").eq("resume_token", token).maybeSingle();
+    const { data, error } = await this.db.from("sessions").select("id, profile").eq("resume_token", token).maybeSingle();
     if (error) throw new Error(`Could not load session: ${error.message}`);
     if (!data) return null;
     const parsed = buyerProfile.safeParse(data.profile);
-    return { token, profile: parsed.success ? parsed.data : buyerProfile.parse({}) };
+    return { id: data.id as string, token, profile: parsed.success ? parsed.data : buyerProfile.parse({}) };
   }
   async save(token: string, profile: BuyerProfile) {
     const { error } = await this.db.from("sessions").update({ profile }).eq("resume_token", token);

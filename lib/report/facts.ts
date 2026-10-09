@@ -1,3 +1,4 @@
+import { HUB_LABELS } from "@/config/questions";
 import { formatRupees } from "@/lib/format";
 import { resolveProfile, type ResolvedProfile } from "@/lib/profile/defaults";
 import { summaryLines } from "@/lib/profile/summary";
@@ -17,7 +18,7 @@ export interface PickFacts {
   corridor: string;
   rank: number;
   totalScore: number;
-  dimensions: DimensionScore[];
+  dimensions: { dimension: string; score: number | null; weightPercent: number; notes: string[] }[];
   typicalPrice: { bhk: number; low: string; high: string } | null;
   pricePerSqft: { min: number; max: number } | null;
   pricePerSqftTrend: "not available";
@@ -60,7 +61,7 @@ function pickFacts(r: ScoredResult, m: MicroMarketRow, p: ResolvedProfile, ds: D
   const band = priceForMinBhk(m, p.minBhk);
   const commute = p.workHubs.flatMap((hub) => {
     const row = ds.commuteTimes.find((c) => c.micro_market_id === id && c.destination === hub && c.mode === p.commuteMode);
-    return row ? [{ destination: hub, mode: p.commuteMode, peakMinutes: row.peak_minutes, yourLimitMinutes: p.maxCommuteMinutes }] : [];
+    return row ? [{ destination: HUB_LABELS[hub as keyof typeof HUB_LABELS] ?? hub, mode: p.commuteMode.replace("_", " "), peakMinutes: row.peak_minutes, yourLimitMinutes: p.maxCommuteMinutes }] : [];
   });
   const schools = ds.schools
     .filter((s) => s.micro_market_id === id && (!p.school || p.school.board === "open" || s.board === p.school.board))
@@ -73,7 +74,7 @@ function pickFacts(r: ScoredResult, m: MicroMarketRow, p: ResolvedProfile, ds: D
     corridor: r.corridor,
     rank: r.rank!,
     totalScore: r.totalScore!,
-    dimensions: r.dimensions,
+    dimensions: r.dimensions.map((d: DimensionScore) => ({ dimension: DIMENSION_LABELS[d.dimension], score: d.score, weightPercent: Math.round(d.weight), notes: d.notes })),
     typicalPrice: band ? { bhk: band.bhk, low: formatRupees(band.min), high: formatRupees(band.max) } : null,
     pricePerSqft: m.price_per_sqft_min !== null && m.price_per_sqft_max !== null ? { min: m.price_per_sqft_min, max: m.price_per_sqft_max } : null,
     pricePerSqftTrend: "not available",

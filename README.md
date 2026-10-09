@@ -49,3 +49,9 @@ is used. Try it locally (sample data, no email or web page yet):
 npm run report -- data/sample/profile.example.json --no-llm          # template narrative
 npm run report -- data/sample/profile.example.json --out report.json  # uses ANTHROPIC_MODEL
 ```
+
+## Report page (Step 7)
+`/report/<token>` renders a stored report (unguessable token, `noindex`); "Download PDF" uses the
+browser's print dialog with a print stylesheet. Preview the layout without a database at
+`/report/sample` (development only; set `ENABLE_SAMPLE_REPORT=true` to allow it in production).
+With Supabase configured, `npm run report -- <profile.json> --save` stores a report and prints its link.
