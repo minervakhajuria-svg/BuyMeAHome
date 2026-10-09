@@ -26,4 +26,4 @@ export const RATES = {
   minLiquidityBufferMonths: 6, // VERIFY against official source (own policy, not statutory)
 } as const;
 
-export type Rates = typeof RATES;
+export type Rates = Record<keyof typeof RATES, number>;

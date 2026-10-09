@@ -41,6 +41,8 @@ export const scoredResult = z.object({
   corridor: z.string().min(1),
   /** Weighted 0 to 100 total; null for markets removed by a hard filter. */
   totalScore: z.number().min(0).max(100).nullable(),
+  /** Share (0 to 1) of the applicable weight that had data; null for hard-filtered markets. */
+  coverage: z.number().min(0).max(1).nullable().default(null),
   /** 1-based rank among surviving markets; null if excluded. */
   rank: z.number().int().positive().nullable(),
   status: z.enum(["top", "backup", "ruled_out"]),

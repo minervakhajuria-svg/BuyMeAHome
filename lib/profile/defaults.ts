@@ -1,4 +1,4 @@
-import type { BuyerProfile, InfraItem, LifestyleItem } from "@/lib/schemas";
+import type { BuyerProfile, InfraItem, LifestyleItem, PropertyStatus, PropertyType } from "@/lib/schemas";
 import { INFRA_ITEMS, LIFESTYLE_ITEMS, schoolsQuestionApplies } from "@/lib/schemas";
 import type { Importance } from "@/lib/schemas";
 
@@ -42,8 +42,8 @@ export interface ResolvedProfile {
   downPayment: number | null;
   householdMonthlyIncome: number | null;
   existingMonthlyEmis: number;
-  propertyTypes: string[];
-  propertyStatuses: string[];
+  propertyTypes: PropertyType[];
+  propertyStatuses: PropertyStatus[];
   minBhk: number;
   minCarpetSqft: number | null;
   khata: "a_only" | "b_acceptable";
@@ -110,9 +110,9 @@ export function resolveProfile(p: BuyerProfile): ResolveResult {
   }
 
   const types = p.property?.types.length ? p.property.types : undefined;
-  const propertyTypes = dflt<string[]>(types, [...DEFAULTS.propertyTypes], "Property: assumed apartment");
+  const propertyTypes = dflt<PropertyType[]>(types, [...DEFAULTS.propertyTypes], "Property: assumed apartment");
   const statuses = p.property?.statuses.length ? p.property.statuses : undefined;
-  const propertyStatuses = dflt<string[]>(
+  const propertyStatuses = dflt<PropertyStatus[]>(
     statuses,
     [...DEFAULTS.propertyStatuses],
     "Property: ready, under-construction and resale all accepted",

@@ -10,3 +10,10 @@ export const BASE_WEIGHTS = {
 } as const;
 
 export type WeightKey = keyof typeof BASE_WEIGHTS;
+
+/** How many markets are headlined and how many are kept as backups. Everything else is ruled out. */
+export const TOP_N = 3;
+export const BACKUP_N = 3;
+
+/** A market needs data for at least this share of the applicable weight to be ranked at all. */
+export const MIN_COVERAGE = 0.6;

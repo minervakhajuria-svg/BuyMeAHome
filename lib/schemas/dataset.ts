@@ -15,6 +15,10 @@ const optInt = z.preprocess(
 ).default(null);
 const optNum = z.preprocess(blankToNull, z.coerce.number().nullable()).default(null);
 
+const level3 = z
+  .preprocess((v) => (typeof v === "string" ? v.trim().toLowerCase() || null : v), z.enum(["low", "medium", "high"]).nullable())
+  .default(null);
+
 const csvBool = z.preprocess((v) => {
   if (typeof v === "string") {
     const s = v.trim().toLowerCase();
@@ -25,6 +29,15 @@ const csvBool = z.preprocess((v) => {
 }, z.boolean());
 
 /** typical_price_by_bhk: { "2": { min, max }, "3": { min, max } } in rupees. May arrive as JSON text. */
+const optBool = z
+  .preprocess((v) => {
+    const b = blankToNull(v);
+    if (b === null) return null;
+    if (typeof b === "string") return ["true", "t", "1", "yes", "y"].includes(b.trim().toLowerCase());
+    return b;
+  }, z.boolean().nullable())
+  .default(null);
+
 export const priceByBhk = z.preprocess(
   (v) => {
     const b = blankToNull(v);
@@ -39,7 +52,8 @@ export const priceByBhk = z.preprocess(
 ).default(null);
 
 export const microMarketRow = z.object({
-  id: z.uuid().optional(),
+  /** UUID in the database; CSV imports may use a stable slug, which child rows reference. */
+  id: z.string().min(1).optional(),
   name: z.string().min(1),
   corridor: z.string().min(1),
   lat: optNum,
@@ -53,6 +67,15 @@ export const microMarketRow = z.object({
   water_note: optText,
   power_note: optText,
   air_noise_note: optText,
+  // Structured levels used for deterministic scoring; the notes above are for the report text.
+  flood_risk_level: level3,
+  water_source: z
+    .preprocess((v) => (typeof v === "string" ? v.trim().toLowerCase() || null : v), z.enum(["cauvery", "mixed", "borewell_tanker"]).nullable())
+    .default(null),
+  power_cut_level: level3,
+  air_noise_level: level3,
+  greenery_level: level3,
+  hospitals_level: level3,
   walkability_score: z.preprocess(
     blankToNull,
     z.coerce.number().int().min(0).max(100).nullable(),
@@ -83,7 +106,12 @@ export const projectRow = z.object({
   rera_number: optText,
   status: z.preprocess(blankToNull, propertyStatus.nullable()).default(null),
   khata_type: z.preprocess(blankToNull, z.enum(["A", "B", "unknown"]).nullable()).default(null),
+  /** 'received' | 'pending' | 'not_applicable' (free text is kept, only 'received' counts as OC/CC held). */
   oc_cc_status: optText,
+  gated_clubhouse: optBool,
+  has_parking: optBool,
+  has_power_backup: optBool,
+  has_lift: optBool,
   as_of_date: isoDate,
 });
 export type ProjectRow = z.infer<typeof projectRow>;
