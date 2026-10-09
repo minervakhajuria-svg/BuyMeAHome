@@ -31,3 +31,11 @@ protection law (DPDP Act) need legal review before any public launch.
 
 ## Not advice
 Reports are not financial or legal advice. Verify everything before buying.
+
+## Intake chat (Step 5)
+`/chat` runs the 10-question intake; the first answer creates a resume link (`/chat/<token>`).
+Questions, their order and their wording live in code (`config/questions.ts`). Option widgets send
+typed answers directly; typed replies for household, work and budget (and the dealbreakers note)
+go through `POST /api/intake`, where Claude only extracts the answer into the typed profile
+(`ANTHROPIC_MODEL`, credentials from the Anthropic SDK defaults). Without Supabase keys, sessions
+are kept in memory and lost on restart (local development only).
