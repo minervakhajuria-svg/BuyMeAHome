@@ -55,3 +55,13 @@ npm run report -- data/sample/profile.example.json --out report.json  # uses ANT
 browser's print dialog with a print stylesheet. Preview the layout without a database at
 `/report/sample` (development only; set `ENABLE_SAMPLE_REPORT=true` to allow it in production).
 With Supabase configured, `npm run report -- <profile.json> --save` stores a report and prints its link.
+
+## Email and consent gate (Step 8)
+After question 10 the chat shows a short privacy notice, a consent checkbox and an email field.
+`POST /api/report` records the email and consent time on the session, generates the report, saves it
+and emails the link through Resend (`RESEND_API_KEY`, `EMAIL_FROM`). The email address never reaches
+the report data or the model. If sending fails or Resend is not configured, the page shows the report
+link instead. Draft privacy and consent wording lives in `components/intake/ReportGate.tsx` and
+`lib/consent.ts`; have it reviewed (see the data protection note above) before any public launch.
+Rate limits (reports: 5 an hour per address and 3 an hour per session; typed answers: 20 per 10 minutes)
+are in-memory per server instance, so put a shared limiter in front before a public launch.

@@ -14,6 +14,8 @@ export interface SessionStore {
   create(profile: BuyerProfile): Promise<SessionRecord>;
   get(token: string): Promise<SessionRecord | null>;
   save(token: string, profile: BuyerProfile): Promise<void>;
+  /** Records the email and consent timestamp given at the report gate. */
+  setContact(token: string, email: string, consentAt: Date): Promise<void>;
 }
 
 export const TOKEN_PATTERN = /^[A-Za-z0-9_-]{16,64}$/;
@@ -21,6 +23,8 @@ export const newToken = () => randomBytes(16).toString("base64url");
 
 export class MemorySessionStore implements SessionStore {
   private rows = new Map<string, BuyerProfile>();
+  /** Exposed for tests. */
+  contacts = new Map<string, { email: string; consentAt: Date }>();
   async create(profile: BuyerProfile) {
     const token = newToken();
     this.rows.set(token, profile);
@@ -33,6 +37,10 @@ export class MemorySessionStore implements SessionStore {
   async save(token: string, profile: BuyerProfile) {
     if (!this.rows.has(token)) throw new Error("Unknown session");
     this.rows.set(token, profile);
+  }
+  async setContact(token: string, email: string, consentAt: Date) {
+    if (!this.rows.has(token)) throw new Error("Unknown session");
+    this.contacts.set(token, { email, consentAt });
   }
 }
 
@@ -57,6 +65,10 @@ export class SupabaseSessionStore implements SessionStore {
   async save(token: string, profile: BuyerProfile) {
     const { error } = await this.db.from("sessions").update({ profile }).eq("resume_token", token);
     if (error) throw new Error(`Could not save session: ${error.message}`);
+  }
+  async setContact(token: string, email: string, consentAt: Date) {
+    const { error } = await this.db.from("sessions").update({ email, consent_at: consentAt.toISOString() }).eq("resume_token", token);
+    if (error) throw new Error(`Could not save contact: ${error.message}`);
   }
 }
 

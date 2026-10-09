@@ -5,6 +5,7 @@ import { QUESTION_BY_ID, QUESTIONS } from "@/config/questions";
 import { nextQuestion } from "@/lib/intake/flow";
 import { summaryLines } from "@/lib/profile/summary";
 import { buyerProfile, type BuyerProfile, type QuestionId } from "@/lib/schemas";
+import { ReportGate } from "./ReportGate";
 import { Sidebar } from "./Sidebar";
 import { QuestionWidget } from "./widgets";
 
@@ -70,7 +71,7 @@ export function IntakeChat({ initialToken, initialProfile }: { initialToken?: st
           const out: Message[] = [...m, { role: "user", text: userText }];
           if (wasEditing) out.push({ role: "assistant", text: "Updated." });
           if (data.next === "done") {
-            out.push({ role: "assistant", text: "That's all 10 questions. Your picks will be ready to generate in the next step of the build." });
+            out.push({ role: "assistant", text: "That's all 10 questions. You can still edit any answer in the sidebar before you get your report." });
           } else if (!wasEditing || data.next !== nextQuestion(profile)) {
             out.push({ role: "assistant", text: askText(data.next) });
           }
@@ -142,6 +143,7 @@ export function IntakeChat({ initialToken, initialProfile }: { initialToken?: st
             </div>
           </div>
         )}
+        {active === "done" && token && <ReportGate token={token} />}
         <div ref={endRef} />
       </section>
 
