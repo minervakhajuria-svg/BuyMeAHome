@@ -7,11 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "import:micro-markets": "tsx scripts/import-micro-markets.ts",
+    "import:schools": "tsx scripts/import-schools.ts",
+    "import:projects": "tsx scripts/import-projects.ts",
+    "import:commute-times": "tsx scripts/import-commute-times.ts",
+    "seed:sample": "tsx scripts/seed-sample.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.132.1",
     "@supabase/supabase-js": "^2.117.3",
+    "csv-parse": "^7.0.3",
     "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

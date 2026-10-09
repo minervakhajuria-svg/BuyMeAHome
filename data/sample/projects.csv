@@ -1,0 +1,25 @@
+micro_market_slug,name,rera_number,status,khata_type,oc_cc_status,gated_clubhouse,has_parking,has_power_backup,has_lift,as_of_date
+sarjapur-harlur-kasavanahalli,Sample Project A1,SAMPLE-RERA-11,ready,A,received,true,true,true,true,2026-10-09
+sarjapur-harlur-kasavanahalli,Sample Project A2,SAMPLE-RERA-12,under_construction,A,not_applicable,true,true,false,true,2026-10-09
+sarjapur-harlur-kasavanahalli,Sample Project A3,,resale,A,received,false,true,true,false,2026-10-09
+whitefield-hope-farm-itpl,Sample Project B1,SAMPLE-RERA-21,under_construction,A,not_applicable,true,true,true,true,2026-10-09
+whitefield-hope-farm-itpl,Sample Project B2,,resale,A,received,true,true,false,true,2026-10-09
+whitefield-hope-farm-itpl,Sample Project B3,SAMPLE-RERA-23,ready,B,received,false,true,true,false,2026-10-09
+hebbal-kempapura,Sample Project C1,SAMPLE-RERA-31,resale,A,received,true,true,true,true,2026-10-09
+hebbal-kempapura,Sample Project C2,SAMPLE-RERA-32,ready,B,received,true,true,false,true,2026-10-09
+hebbal-kempapura,Sample Project C3,SAMPLE-RERA-33,under_construction,A,not_applicable,false,true,true,false,2026-10-09
+yelahanka-new-town,Sample Project D1,SAMPLE-RERA-41,ready,B,received,true,true,true,true,2026-10-09
+yelahanka-new-town,Sample Project D2,SAMPLE-RERA-42,under_construction,A,not_applicable,true,true,false,true,2026-10-09
+yelahanka-new-town,Sample Project D3,,resale,A,received,false,true,true,false,2026-10-09
+electronic-city-phase-1,Sample Project E1,SAMPLE-RERA-51,under_construction,A,not_applicable,true,true,true,true,2026-10-09
+electronic-city-phase-1,Sample Project E2,,resale,A,received,true,true,false,true,2026-10-09
+electronic-city-phase-1,Sample Project E3,SAMPLE-RERA-53,ready,A,received,false,true,true,false,2026-10-09
+bellandur-marathahalli-orr,Sample Project F1,SAMPLE-RERA-61,resale,A,received,true,true,true,true,2026-10-09
+bellandur-marathahalli-orr,Sample Project F2,SAMPLE-RERA-62,ready,A,received,true,true,false,true,2026-10-09
+bellandur-marathahalli-orr,Sample Project F3,SAMPLE-RERA-63,under_construction,B,not_applicable,false,true,true,false,2026-10-09
+jp-nagar-phases-2-to-6,Sample Project G1,SAMPLE-RERA-71,ready,A,received,true,true,true,true,2026-10-09
+jp-nagar-phases-2-to-6,Sample Project G2,SAMPLE-RERA-72,under_construction,B,not_applicable,true,true,false,true,2026-10-09
+jp-nagar-phases-2-to-6,Sample Project G3,,resale,A,received,false,true,true,false,2026-10-09
+thanisandra-hennur-road,Sample Project H1,SAMPLE-RERA-81,under_construction,B,not_applicable,true,true,true,true,2026-10-09
+thanisandra-hennur-road,Sample Project H2,,resale,A,received,true,true,false,true,2026-10-09
+thanisandra-hennur-road,Sample Project H3,SAMPLE-RERA-83,ready,A,received,false,true,true,false,2026-10-09
