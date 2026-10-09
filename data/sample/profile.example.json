@@ -1,0 +1,22 @@
+{
+  "household": { "adults": 2, "kidAges": [5], "parentsLiving": false, "pets": false },
+  "work": {
+    "workplaces": [{ "who": "you", "hub": "orr_bellandur" }, { "who": "partner", "hub": "manyata_hebbal" }],
+    "officeDaysPerWeek": 3,
+    "maxCommuteMinutes": 60,
+    "mode": "car"
+  },
+  "schools": { "board": "CBSE", "maxSchoolRunMinutes": 20 },
+  "budget": {
+    "allInBudget": { "min": 14000000, "max": 16000000 },
+    "downPayment": 4000000,
+    "householdMonthlyIncome": 350000,
+    "existingMonthlyEmis": 15000
+  },
+  "property": { "types": ["apartment"], "statuses": ["ready", "resale"], "minBhk": 2, "minCarpetSqft": 1000 },
+  "legal": { "khata": "a_only", "reraWithOcCcRequired": true },
+  "community": { "setting": "gated_with_clubhouse", "mustHaves": ["parking", "lift"] },
+  "infrastructure": { "ratings": { "flood_history": "must_have", "water_source": "must_have", "garbage_roads": "dont_care" } },
+  "lifestyle": { "ratings": { "walkability": "nice_to_have", "airport_access": "dont_care" } },
+  "skipped": []
+}

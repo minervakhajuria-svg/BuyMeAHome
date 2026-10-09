@@ -12,7 +12,8 @@
     "import:schools": "tsx scripts/import-schools.ts",
     "import:projects": "tsx scripts/import-projects.ts",
     "import:commute-times": "tsx scripts/import-commute-times.ts",
-    "seed:sample": "tsx scripts/seed-sample.ts"
+    "seed:sample": "tsx scripts/seed-sample.ts",
+    "report": "tsx scripts/generate-report.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.132.1",

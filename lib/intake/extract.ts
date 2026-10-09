@@ -23,7 +23,7 @@ export type ExtractResult = { ok: true; answer: unknown } | { ok: false; followu
 export type Extractor = (question: ExtractableQuestion, text: string) => Promise<ExtractResult>;
 
 /** Calls the model with a schema and returns the parsed object (or null). Injectable for tests. */
-export type ModelCall = (args: { system: string; user: string; schema: z.ZodType }) => Promise<unknown>;
+export type ModelCall = (args: { system: string; user: string; schema: z.ZodType; maxTokens?: number }) => Promise<unknown>;
 
 /* Loose schemas: what the model fills in. No defaults or constraints, everything nullable. */
 
@@ -140,10 +140,10 @@ export function anthropicModelCall(): ModelCall {
   const model = process.env.ANTHROPIC_MODEL;
   if (!model) throw new Error("ANTHROPIC_MODEL is not set");
   const client = new Anthropic();
-  return async ({ system, user, schema }) => {
+  return async ({ system, user, schema, maxTokens }) => {
     const response = await client.messages.parse({
       model,
-      max_tokens: 4000,
+      max_tokens: maxTokens ?? 4000,
       system,
       messages: [{ role: "user", content: user }],
       output_config: { format: zodOutputFormat(schema) },

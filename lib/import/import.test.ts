@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { resolveProfile } from "@/lib/profile/defaults";
-import { buyerProfile, type Dataset } from "@/lib/schemas";
+import { buyerProfile } from "@/lib/schemas";
 import { scoreMarkets } from "@/lib/scoring";
+import { loadSampleDataset } from "@/lib/dataset/sample";
 import { parseCsv, validateRows } from "./csv";
 import { TABLES } from "./tables";
 
@@ -73,14 +74,7 @@ describe("sample dataset", () => {
   });
 
   it("runs through the scoring engine and yields ranked, ruled-out and gap-aware results", () => {
-    const withId = <T extends Record<string, unknown>>(rows: T[]) =>
-      rows.map(({ micro_market_slug, ...r }) => ({ ...r, micro_market_id: micro_market_slug }));
-    const ds = {
-      microMarkets: valid.micro_markets.map(({ slug, ...r }) => ({ ...r, id: slug })),
-      schools: withId(valid.schools),
-      projects: withId(valid.projects),
-      commuteTimes: withId(valid.commute_times),
-    } as unknown as Dataset;
+    const ds = loadSampleDataset();
 
     const { resolved, usedDefaults } = resolveProfile(
       buyerProfile.parse({

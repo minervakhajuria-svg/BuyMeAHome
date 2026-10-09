@@ -39,3 +39,13 @@ typed answers directly; typed replies for household, work and budget (and the de
 go through `POST /api/intake`, where Claude only extracts the answer into the typed profile
 (`ANTHROPIC_MODEL`, credentials from the Anthropic SDK defaults). Without Supabase keys, sessions
 are kept in memory and lost on restart (local development only).
+
+## Report engine (Step 6)
+`lib/report/generate.ts` turns a profile and the dataset into report data: hard filters, scoring,
+rule-out log and "honest math" are all code. Claude writes only the narrative, from JSON, and every
+number it writes is checked against the input; after two rejected attempts a deterministic template
+is used. Try it locally (sample data, no email or web page yet):
+```
+npm run report -- data/sample/profile.example.json --no-llm          # template narrative
+npm run report -- data/sample/profile.example.json --out report.json  # uses ANTHROPIC_MODEL
+```

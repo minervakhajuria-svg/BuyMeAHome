@@ -259,6 +259,20 @@ function projectIsRegulated(proj: ProjectRow): boolean {
   return proj.status === "under_construction" || proj.oc_cc_status === "received";
 }
 
+/** Why a single project fails the buyer's stage, khata or RERA requirements (null if it passes). */
+export function projectRejection(proj: ProjectRow, p: ResolvedProfile): string | null {
+  if (proj.status !== null && !p.propertyStatuses.includes(proj.status)) {
+    return `it is ${proj.status.replace(/_/g, " ")}, which you did not select`;
+  }
+  if (p.khata === "a_only" && proj.khata_type !== "A") {
+    return proj.khata_type === "B" ? "it is B-khata and you asked for A-khata only" : "A-khata status is not confirmed in our data";
+  }
+  if (p.reraWithOcCcRequired && !projectIsRegulated(proj)) {
+    return proj.rera_number ? "OC/CC is not confirmed as received" : "no RERA number in our data";
+  }
+  return null;
+}
+
 function hardFilter(
   m: MicroMarketRow,
   p: ResolvedProfile,
