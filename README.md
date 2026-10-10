@@ -65,3 +65,10 @@ link instead. Draft privacy and consent wording lives in `components/intake/Repo
 `lib/consent.ts`; have it reviewed (see the data protection note above) before any public launch.
 Rate limits (reports: 5 an hour per address and 3 an hour per session; typed answers: 20 per 10 minutes)
 are in-memory per server instance, so put a shared limiter in front before a public launch.
+
+## Open items
+- **Pre-filtered live search links** (report section 9) are intentionally not built. They wait on the
+  data-source terms-of-use check; no portal URL formats are assumed.
+- Data sources, dataset curation and refresh cadence, pricing and payments (see the build brief).
+- Legal review of the privacy and consent wording under India's data protection law.
+- Shared (not per-instance) rate limiting before any public launch.
